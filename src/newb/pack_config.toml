@@ -1,13 +1,11 @@
-name = "Newb X Legacy"
-version = [0, 16, 0]
+name = "Newb §6Pineapple ∑ §a[Revived]§r"
+version = [0, 1, 0]
 min_supported_mc_version = [1, 21, 130]
 description = '''
-§c%w
-§7- An enchanced vanilla shader for Minecraft!
-%v
-§3https://devendrn.github.io/newb-shader/
+%v - §c%w§r
+§7Another newb variants to improve your minecraft visual with bright lighting, low saturation, soft shadow, foggy environment and immersive bloom.§r
 ''' # %w = patch warning, %v = version
-authors = ["devendrn"]
+authors = ["ethereal", "devendrn"]
 url = "https://devendrn.github.io/newb-shader/"
 uuid = "95f774cf-4afa-73e7-a21a-72146307b1d2" # Use https://www.uuidgenerator.net/version4
 materials = ["Sky", "RenderChunk", "Actor", "ActorGlint", "EndSky", "Clouds", "SunMoon", "Weather", "ItemInHandTextured", "ItemInHandColor", "ItemInHandColorGlint", "Stars"]
@@ -25,6 +23,19 @@ Contact (Discord Server): https://discord.gg/newb-community-844591537430069279
 credits = '''
 '''
 
+[label]
+text = '''
+§cShaders are not officially supported on Minecraft Bedrock.
+Some devices will experience rounded cloud bugs§r
+
+Configuration Settings: 
+Recommended set in-game brightness to 20
+Lower render view distance (8-10) for better fog experience
+Don't use experimental features and education mode (or some bugs will occur)
+
+Thank you very much for downloading and using this shader :)§r
+'''
+
 # subpacks are arranged in left to right order
 # right-most subpack is enabled by default
 
@@ -40,13 +51,6 @@ define = "BOX_CLOUDS"
 materials = ["Clouds", "RenderChunk"]
 description = '''
 Box Clouds
-'''
-
-[[subpack]]
-define = "CHUNK_ANIM"
-materials = ["RenderChunk"]
-description = '''
-Chunk loading animation
 '''
 
 [[subpack]]
