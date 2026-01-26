@@ -21,7 +21,7 @@ void main() {
     env.underwater = v_posTime.w < 1.0;
     env.rainFactor = 0.0;
 
-    nl_skycolor skycol = nlEndSkyColors(env.rainFactor, diffuse.rgb);
+    nl_skycolor skycol = nlEndSkyColors(env);
 
     vec3 color = renderEndSky(skycol, viewDir, v_posTime.w);
 
