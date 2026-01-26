@@ -53,7 +53,8 @@ float cloudDf(vec3 pos, float rain, vec2 boxiness) {
   // round y
   n *= 1.0 - 1.5*smoothstep(boxiness.y, 2.0 - boxiness.y, 2.0*abs(pos.y-0.5));
 
-  n = max(1.25*(n-0.2), 0.0); // smoothstep(0.2, 1.0, n)
+  n = max(1.26*(n-0.2), 0.0);
+  //n = smoothstep(0.2, 1.0, n);
   n *= n*(3.0 - 2.0*n);
   return n;
 }
@@ -66,37 +67,47 @@ vec4 renderCloudsRounded(
   float height = 7.0*mix(thickness, thickness_rain, rain);
   float stepsf = float(steps);
 
-  // scaled ray offset
+  // scaled offset ray
   vec3 deltaP;
   deltaP.y = 1.0;
-  deltaP.xz = height*scale*vDir.xz/(0.02+0.98*abs(vDir.y));
+  deltaP.xz = height*scale*vDir.xz/(0.02 + 0.98*abs(vDir.y));
 
   // local cloud pos
   vec3 pos;
   pos.y = 0.0;
-  pos.xz = scale*(vPos.xz + vec2(1.0,0.5)*(time*speed));
+  pos.xz = scale*(vPos.xz + vec2(1.0, 0.5)*(time*speed));
   pos += deltaP;
 
   deltaP /= -stepsf;
 
   // alpha, gradient
-  vec2 d = vec2(0.0,1.0);
-  for (int i=1; i<=steps; i++) {
+  vec2 d = vec2(0.0, 1.0);
+  for (int i = 1; i <= steps; i++) {
     float m = cloudDf(pos, rain, boxiness);
     d.x += m;
     d.y = mix(d.y, pos.y, m);
     pos += deltaP;
   }
-  d.x *= smoothstep(0.03, 0.1, d.x);
+
+  d.x *= smoothstep(1.0, 1.0, d.x); // 0.03, 0.1
   d.x /= (stepsf/density) + d.x;
 
-  if (vPos.y < 0.0) { // view from top
+  if (vPos.y > 0.0) { // view from bottom
     d.y = 1.0 - d.y;
   }
 
-  vec4 col = vec4(zenithCol + horizonCol, d.x);
-  col.rgb += dot(col.rgb, vec3(0.3,0.4,0.3))*d.y*d.y;
-  col.rgb *= 1.0 - 0.8*rain;
+  d.y = 1.0 - 1.15*d.y*d.y;
+
+  // detect time
+  float night = max(1.0-3.0*max(horizonCol.b, horizonCol.g), 0.0);
+  float dusk = smoothstep(0.1, 0.5, max(horizonCol.r - horizonCol.b, 0.0)*max(horizonCol.r - horizonCol.g*0.5, 0.0));
+
+  // color blending
+  vec4 col = vec4(horizonCol*1.6, d.x);
+  col.rgb += (zenithCol + 0.99*horizonCol)*d.y;
+  col.rgb *= 1.0 - 0.5*rain;
+  col.rgb += mix(horizonCol, vec3(0.55, 0.20, 0.12), dusk);
+
   return col;
 }
 

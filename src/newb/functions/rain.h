@@ -21,7 +21,7 @@ vec4 nlRefl(
   vec4 wetRefl = vec4(0.0,0.0,0.0,0.0);
 
   #ifndef NL_GROUND_REFL
-  if (env.rainFactor > 0.0) {
+  if (env.rainFactor > 0.0 || env.end) {
   #endif
 
     float wetness = lit.y*lit.y;
@@ -33,14 +33,20 @@ vec4 nlRefl(
       float puddles = max(1.0 - NL_GROUND_RAIN_PUDDLES*fastRand(tiledCpos.xz), 0.0);
 
       #ifndef NL_GROUND_REFL
+        float reflective = 0.0;
         wetness *= puddles;
-        float reflective = wetness*env.rainFactor*NL_GROUND_RAIN_WETNESS;
+
+        if (env.end) { // forced ground reflection remains at the end
+          reflective = max(wetness*(0.6 + 0.5*smoothstep(-2.0, 0.5, wPos.y)), 0.5)*2.0;
+        } else {
+          reflective = wetness*env.rainFactor*NL_GROUND_RAIN_WETNESS;
+        }
       #else
         float reflective = NL_GROUND_REFL;
         if (!env.end && !env.nether) {
           // only multiply with wetness in overworld
           reflective *= wetness;
-        } 
+        }
 
         wetness *= puddles;
         reflective = mix(reflective, wetness, env.rainFactor);
