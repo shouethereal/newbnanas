@@ -40,17 +40,24 @@ Thank you very much for downloading and using this shader :)§r
 # right-most subpack is enabled by default
 
 [[subpack]]
-define = "ROUNDED_CLOUDS"
+define = "REALISTIC_CLOUDS"
 materials = ["Clouds"]
 description = '''
-Rounded Clouds
+Realistic Clouds
 '''
 
 [[subpack]]
 define = "BOX_CLOUDS"
-materials = ["Clouds", "RenderChunk"]
+materials = ["Clouds"]
 description = '''
 Box Clouds
+'''
+
+[[subpack]]
+define = "SIMPLE_CLOUDS"
+materials = ["Clouds"]
+description = '''
+Simple Clouds
 '''
 
 [[subpack]]
